@@ -2,6 +2,8 @@
 
 A modern, lightweight, privacy-first browser extension that empowers users to easily install, create, edit, and manage custom Userscripts (`.user.js`) from any URL, local file, or the built-in code editor—running seamlessly across modern websites with full `GM_*` API compatibility.
 
+<img width="2730" height="1536" alt="userscript" src="https://github.com/user-attachments/assets/2004b860-dcb7-4762-a38c-84e429a9f661" />
+
 Compatible with all major browsers: **Chrome, Brave, Edge, Opera, Vivaldi (Chromium-based)** and **Mozilla Firefox**.
 
 
