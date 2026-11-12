@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Userscript - Dashboard & Editor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <img src="icons/icon-48.png" width="28" height="28" style="border-radius: 50%;" alt="Userscript" />
+        </div>
+        <div class="brand-info">
+          <h2>Userscript</h2>
+          <span>Userscript Manager</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="installed">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span>Installed Scripts</span>
+          <span class="nav-badge" id="sidebar-installed-count">0</span>
+        </button>
+
+
+        <button class="nav-item" data-tab="install">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Add / Install</span>
+        </button>
+
+        <button class="nav-item" data-tab="settings">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>Settings & Backup</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- 1. TAB: INSTALLED SCRIPTS -->
+      <section class="tab-pane active" id="pane-installed">
+        <div class="pane-header">
+          <div>
+            <h1 class="pane-title">Installed Userscripts</h1>
+            <p class="pane-subtitle">Manage, toggle, edit, and organize all your active scripts</p>
+          </div>
+          <div class="pane-actions">
+            <select id="filter-status" class="select-dropdown">
+              <option value="all">All Scripts</option>
+              <option value="enabled">Enabled Only</option>
+              <option value="disabled">Disabled Only</option>
+            </select>
+            <button class="btn btn-secondary" id="btn-check-all-updates">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+              <span>Check Updates</span>
+            </button>
+            <button class="btn btn-primary" id="btn-create-new-script">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>New Script</span>
+            </button>
+          </div>
+        </div>
+
+        
+
+        <div class="scripts-grid" id="installed-scripts-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- 2. TAB: CODE EDITOR -->
+      <section class="tab-pane" id="pane-editor">
+        <div class="editor-header">
+          <div class="editor-title-group">
+            <span class="editor-badge" id="editor-status-badge">Editing</span>
+            <input type="text" class="editor-script-name" id="editor-name-input" placeholder="Script Name" />
+            <span class="editor-ver-tag" id="editor-version-tag">v1.0.0</span>
+          </div>
+
+          <div class="editor-actions">
+            <button class="btn btn-secondary" id="btn-editor-download" title="Export as .user.js">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Export</span>
+            </button>
+            <button class="btn btn-secondary" id="btn-editor-cancel">Cancel</button>
+            <button class="btn btn-primary" id="btn-editor-save">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              <span>Save (Ctrl+S)</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-body">
+          <div class="code-editor-container">
+            <div class="editor-quickbar">
+              <span class="quickbar-label">Insert Directives:</span>
+              <button class="quickbar-btn" data-insert="// @match        *://*.example.com/*">+ @match</button>
+              <button class="quickbar-btn" data-insert="// @grant        GM_addStyle">+ @grant</button>
+              <button class="quickbar-btn" data-insert="// @require      https://code.jquery.com/jquery-3.7.1.min.js">+ @require</button>
+              <button class="quickbar-btn" data-insert="// @run-at       document-start">+ @run-at</button>
+              <button class="quickbar-btn" data-insert="// @connect      api.example.com">+ @connect</button>
+            </div>
+
+            <div class="editor-workspace">
+              <div class="line-numbers" id="line-numbers">1</div>
+              <textarea id="code-textarea" spellcheck="false" placeholder="// Paste or write your Userscript here..."></textarea>
+            </div>
+          </div>
+
+          <div class="metadata-inspector">
+            <div class="inspector-title">Script Metadata</div>
+            
+            <div class="meta-field">
+              <label>Name</label>
+              <div class="meta-val" id="meta-display-name">-</div>
+            </div>
+            
+            <div class="meta-field">
+              <label>Version</label>
+              <div class="meta-val" id="meta-display-version">-</div>
+            </div>
+
+            <div class="meta-field">
+              <label>Execution Stage (@run-at)</label>
+              <div class="meta-val badge-val" id="meta-display-runat">document-idle</div>
+            </div>
+
+            <div class="meta-field">
+              <label>Matching Domains (@match)</label>
+              <div class="meta-tags-container" id="meta-display-matches"></div>
+            </div>
+
+            <div class="meta-field">
+              <label>Permissions (@grant)</label>
+              <div class="meta-tags-container" id="meta-display-grants"></div>
+            </div>
+
+            <div class="meta-field">
+              <label>Libraries (@require)</label>
+              <div class="meta-tags-container" id="meta-display-requires"></div>
+            </div>
+
+            <div class="meta-field" id="meta-error-box">
+              <div class="syntax-status valid" id="syntax-status">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>Syntax OK</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. TAB: ADD / INSTALL -->
+      <section class="tab-pane" id="pane-install">
+        <div class="pane-header">
+          <div>
+            <h1 class="pane-title">Add / Install Userscript</h1>
+            <p class="pane-subtitle">Install scripts from direct URLs, upload local .user.js files, or create from template</p>
+          </div>
+        </div>
+
+        <div class="install-grid">
+          <div class="install-card">
+            <div class="install-card-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#4f46e5" stroke-width="2">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+              </svg>
+            </div>
+            <h3>Install from URL</h3>
+            <p>Paste any URL pointing to a raw <code>.user.js</code> file (GreasyFork, GitHub Raw, OpenUserJS, etc.)</p>
+            
+            <div class="install-input-row">
+              <input type="url" id="dash-url-input" placeholder="https://example.com/script.user.js" spellcheck="false" />
+              <button class="btn btn-primary" id="btn-dash-fetch-url">Fetch & Inspect</button>
+            </div>
+
+            <div id="dash-url-preview" class="dash-preview-box hidden">
+              <div class="preview-title" id="dash-preview-title">Script Title</div>
+              <div class="preview-author" id="dash-preview-author">by Author • v1.0.0</div>
+              <div class="preview-desc" id="dash-preview-desc">Script description...</div>
+              <div class="preview-matches" id="dash-preview-matches"></div>
+              <div class="preview-actions-bar">
+                <button class="btn btn-primary" id="btn-dash-confirm-install">Install Script</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="install-card">
+            <div class="install-card-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#10b981" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <h3>Upload .user.js File</h3>
+            <p>Drag and drop a <code>.user.js</code> or <code>.js</code> file from your computer or browse to select.</p>
+            
+            <div class="drop-zone" id="dash-drop-zone">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#94a3b8" stroke-width="1.5">
+                <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+                <path d="M12 12v9"></path>
+                <path d="m16 16-4-4-4 4"></path>
+              </svg>
+              <span>Click or Drop .user.js file here</span>
+              <input type="file" id="dash-file-input" accept=".js,.user.js" style="display: none;" />
+            </div>
+          </div>
+
+          <div class="install-card">
+            <div class="install-card-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#6366f1" stroke-width="2">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </div>
+            <h3>Create New from Template</h3>
+            <p>Start with a clean, fully-configured Userscript boilerplate and customize it in the code editor.</p>
+            
+            <div class="template-actions">
+              <button class="btn btn-primary btn-block" id="btn-dash-create-template">
+                <span>Create</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. TAB: SETTINGS & BACKUP -->
+      <section class="tab-pane" id="pane-settings">
+        <div class="pane-header">
+          <div>
+            <h1 class="pane-title">Settings & Backup</h1>
+            <p class="pane-subtitle">Manage preferences, backup and restore your script library</p>
+          </div>
+        </div>
+
+        <div class="settings-container">
+          <div class="settings-card">
+            <h3 class="settings-card-title">General Preferences</h3>
+            
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Master Userscript Engine</span>
+                <span class="setting-help">Globally enable or pause all userscripts</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settings-master-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Show Active Badge Count</span>
+                <span class="setting-help">Display number of active scripts on the extension icon</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settings-badge-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Automatic Updates Check</span>
+                <span class="setting-help">Check for updates periodically from script download/update URLs</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settings-autoupdate-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h3 class="settings-card-title">Backup & Restore</h3>
+            <p class="settings-card-desc">Export your entire userscript library to a JSON backup file or restore from a previous backup.</p>
+            
+            <div class="backup-actions-row">
+              <button class="btn btn-primary" id="btn-export-backup">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Export Backup (JSON)</span>
+              </button>
+
+              <button class="btn btn-secondary" id="btn-import-backup">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>Import Backup</span>
+              </button>
+              <input type="file" id="backup-file-input" accept=".json" style="display: none;" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast-message">Notification</div>
+
+  <script src="engine.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>
